@@ -1,1 +1,1 @@
-heck yeah read me file!!!!
+heck yeah read me file!!!! adding to this text file so that I can practice git commands on bash some more.
