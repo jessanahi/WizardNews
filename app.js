@@ -1,3 +1,4 @@
+const { Router } = require("express");
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
@@ -60,11 +61,46 @@ app.get("/posts/:id", (req, res) => {
   res.send(singlepagehtml);
 });
 
-const PORT = 1337;
+const ErrorHandler = (err, req, res, next) => {
+  res.status(404);
+  console.error(err.stack);
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Wizard News</title>
+      <link rel="stylesheet" href="/style.css" />
+    </head>
+    <body>
+      <header><img src="/logo.png"/>Wizard News</header>
+      <div class="not-found">
+        <p>Page Not Found</p>
+      </div>
+    </body>
+    </html>`;
+  res.send(html);
+};
 
-app.get("/", (req, res) => {
-  throw new Error("404 NOT FOUND"); // Express will catch this on its own.
-});
+app.use(ErrorHandler);
+
+// const asyncFunction = async (request, response, next) => {
+//   try {
+//     throw new Error(`processing error in request `);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
+// app.get("/posts/:id", async (err, req, res, next) => {
+//   try {
+//     const post = await client.query(baseQuery + "WHERE posts.id = $1", [
+//       req.params.id,
+//     ]);
+//     res.send(postDetails(post));
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 // app.get("/", (req, res, next) => {
 //   fs.readFile("/file-does-not-exist", (err, data) => {
@@ -75,6 +111,8 @@ app.get("/", (req, res) => {
 //     }
 //   });
 // });
+
+const PORT = 1337;
 
 app.listen(PORT, () => {
   console.log(`App listening in port ${PORT}`);
