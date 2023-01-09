@@ -7,7 +7,7 @@ app.use(express.static('public'));
 
 app.get('/', (req, res) => {
   const posts = postBank.list();
-  const pagehtml = `<!DOCTYPE html>
+  const mainhtml = `<!DOCTYPE html>
     <html>
     <head>
       <title>Wizard News</title>
@@ -34,14 +34,13 @@ app.get('/', (req, res) => {
   </div>
 </body>
 </html>`;
-  res.send(pagehtml);
+  res.send(mainhtml);
 });
 
 app.get('/posts/:id', (req, res) => {
   const id = req.params.id;
   const post = postBank.find(id);
-
-  res.send(`<!DOCTYPE html>
+  const singlepagehtml = `<!DOCTYPE html>
   <html>
   <head>
     <title>Wizard News</title>
@@ -54,7 +53,8 @@ app.get('/posts/:id', (req, res) => {
       ${post.content}
   </body>
   </html>
-`);
+`
+  res.send(singlepagehtml);
 });
 
 const PORT = 1337;
